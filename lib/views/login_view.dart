@@ -58,6 +58,8 @@ class _LoginViewState extends State<LoginView> {
                     print('User Not Found');
                   else if (e.code == 'wrong-password') print('Wrong Password');
                 }
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil('/notes/', (route) => false);
               },
               child: const Text('Sign in')),
           TextButton(
