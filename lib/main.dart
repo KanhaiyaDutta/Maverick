@@ -5,7 +5,6 @@ import 'package:maverick/views/register_view.dart';
 import 'package:maverick/views/verify_email_view.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'dart:developer' as devtools show log;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

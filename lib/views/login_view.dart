@@ -53,13 +53,13 @@ class _LoginViewState extends State<LoginView> {
                       .signInWithEmailAndPassword(
                           email: email, password: password);
                   print(userCredential);
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil('/notes/', (route) => false);
                 } on FirebaseAuthException catch (e) {
                   if (e.code == 'user-not-found')
                     print('User Not Found');
                   else if (e.code == 'wrong-password') print('Wrong Password');
                 }
-                Navigator.of(context)
-                    .pushNamedAndRemoveUntil('/notes/', (route) => false);
               },
               child: const Text('Sign in')),
           TextButton(
