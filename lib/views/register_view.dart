@@ -63,8 +63,9 @@ class _RegisterViewState extends State<RegisterView> {
                     await showErrorDialog(context, 'Weak Password');
                   } else if (e.code == 'email-already-in-use') {
                     await showErrorDialog(context, 'Email is already in use');
-                  } else
+                  } else {
                     await showErrorDialog(context, 'Error: ${e.code}');
+                  }
                 } catch (e) {
                   showErrorDialog(context, e.toString());
                 }
