@@ -8,8 +8,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:maverick/main.dart';
-import 'package:maverick/views/login_view.dart';
 import 'package:maverick/views/register_view.dart';
 
 void main() {
