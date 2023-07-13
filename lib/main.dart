@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:maverick/views/login_view.dart';
-import 'package:maverick/views/notes_view.dart';
+import 'package:maverick/views/notes/new_note_view.dart';
+import 'package:maverick/views/notes/notes_view.dart';
 import 'package:maverick/views/register_view.dart';
 import 'package:maverick/views/verify_email_view.dart';
 import 'package:maverick/services/auth/auth_service.dart';
@@ -19,7 +20,8 @@ void main() {
         loginRoute: (context) => const LoginView(),
         registerRoute: (context) => const RegisterView(),
         notesRoute: (context) => const NotesView(),
-        verifyEmailRoute: (context) => const VerifyEmailView()
+        verifyEmailRoute: (context) => const VerifyEmailView(),
+        newNoteRoute: (context) => const NewNoteView(),
       },
     ),
   );
