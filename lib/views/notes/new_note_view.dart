@@ -23,8 +23,9 @@ class _NewNoteViewState extends State<NewNoteView> {
 
   void _textControllerListener() async {
     final note = _note;
-    if (note == null) return;
-
+    if (note == null) {
+      return;
+    }
     final text = _textController.text;
     await _notesService.updateNote(
       note: note,
