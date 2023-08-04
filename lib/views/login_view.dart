@@ -4,6 +4,7 @@ import 'package:maverick/constants/routes.dart';
 import 'package:maverick/services/auth/auth_exceptions.dart';
 import 'package:maverick/services/auth/bloc/auth_bloc.dart';
 import 'package:maverick/services/auth/bloc/auth_events.dart';
+import 'package:maverick/services/auth/bloc/auth_state.dart';
 
 import '../utilities/dialogs/error_dialog.dart';
 
@@ -50,28 +51,30 @@ class _LoginViewState extends State<LoginView> {
               autocorrect: false,
               decoration:
                   const InputDecoration(hintText: ' Enter your password 🤫')),
-          OutlinedButton(
+          BlocListener<AuthBloc, AuthState>(
+            listener: (context, state) async {
+              if (state is AuthStateLoggedOut) {
+                if (state.exception is UserNotFoundAuthException) {
+                  await showErrorDialog(context, 'User not found');
+                } else if (state.exception is WrongPasswordAuthException) {
+                  await showErrorDialog(context, 'Wrong Credentials');
+                } else if (state.exception is GenericAuthException) {
+                  await showErrorDialog(context, 'Authentication error');
+                }
+              }
+            },
+            child: OutlinedButton(
               onPressed: () async {
                 final email = _email.text;
                 final password = _password.text;
-                try {
-                  context.read<AuthBloc>().add(AuthEventLogIn(
-                        email,
-                        password,
-                      ));
-                } on WrongPasswordAuthException {
-                  await showErrorDialog(
-                    context,
-                    'Wrong Credentials',
-                  );
-                } on GenericAuthException {
-                  await showErrorDialog(
-                    context,
-                    'Authentication error',
-                  );
-                }
+                context.read<AuthBloc>().add(AuthEventLogIn(
+                      email,
+                      password,
+                    ));
               },
-              child: const Text('Sign in')),
+              child: const Text('Sign in'),
+            ),
+          ),
           TextButton(
               onPressed: () {
                 Navigator.of(context)
