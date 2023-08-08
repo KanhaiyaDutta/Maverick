@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mycourseapp.maverick">
+    
    <application
         android:enableOnBackInvokedCallback="true"
         android:label="maverick"

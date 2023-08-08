@@ -4,7 +4,8 @@ import 'package:maverick/services/auth/bloc/auth_events.dart';
 import 'package:maverick/services/auth/bloc/auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc(AuthProvider provider) : super(const AuthStateUninitialized()) {
+  AuthBloc(AuthProvider provider)
+      : super(const AuthStateUninitialized(isLoading: true)) {
     // send email verification
     on<AuthEventSendEmailVerification>((event, emit) async {
       await provider.sendEmailVerification();
@@ -21,9 +22,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           password: password,
         );
         await provider.sendEmailVerification();
-        emit(const AuthStateNeedsVerification());
+        emit(const AuthStateNeedsVerification(isLoading: false));
       } on Exception catch (e) {
-        emit(AuthStateRegistering(e));
+        emit(AuthStateRegistering(exception: e, isLoading: false));
       }
     });
 
@@ -37,9 +38,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           isLoading: false,
         ));
       } else if (!user.isEmailVerified) {
-        emit(const AuthStateNeedsVerification());
+        emit(const AuthStateNeedsVerification(isLoading: false));
       } else {
-        emit(AuthStateLoggedIn(user));
+        emit(AuthStateLoggedIn(
+          user: user,
+          isLoading: false,
+        ));
       }
     });
     // Log in
@@ -47,6 +51,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(const AuthStateLoggedOut(
         exception: null,
         isLoading: true,
+        loadingText: 'Please wait while you are logged in',
       ));
       final email = event.email;
       final password = event.password;
@@ -61,16 +66,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             exception: null,
             isLoading: false,
           ));
-          emit(const AuthStateNeedsVerification());
+          emit(const AuthStateNeedsVerification(isLoading: false));
         } else {
           emit(const AuthStateLoggedOut(
             exception: null,
             isLoading: false,
           ));
-          emit(AuthStateLoggedIn(user));
+          emit(AuthStateLoggedIn(user: user, isLoading: false));
         }
-
-        emit(AuthStateLoggedIn(user));
       } on Exception catch (e) {
         emit(AuthStateLoggedOut(
           exception: e,
@@ -79,11 +82,48 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
 
+    //Forgot Password
+    on<AuthEventForgotPassword>((event, emit) async {
+      emit(const AuthStateForgotPassword(
+        exception: null,
+        hasSentEmail: false,
+        isLoading: false,
+      ));
+      final email = event.email;
+      if (email == null) {
+        return;
+      } //user just wants to go to forgot password screen
+
+      //user actually wants to send a forgot-password email
+      emit(const AuthStateForgotPassword(
+        exception: null,
+        hasSentEmail: false,
+        isLoading: true,
+      ));
+
+      bool didSendEmail;
+      Exception? exception;
+
+      try {
+        await provider.sendPasswordReset(toEmail: email);
+        didSendEmail = true;
+        exception = null;
+      } on Exception catch (e) {
+        exception = e;
+        didSendEmail = false;
+      }
+      emit(AuthStateForgotPassword(
+        exception: exception,
+        hasSentEmail: didSendEmail,
+        isLoading: false,
+      ));
+    });
+
     // to register view
     on<AuthEventShouldRegister>((event, emit) {
-      emit(const AuthStateRegistering(null));
+      emit(const AuthStateRegistering(exception: null, isLoading: false));
     });
-    
+
     // Log out
     on<AuthEventLogOut>((event, emit) async {
       try {
