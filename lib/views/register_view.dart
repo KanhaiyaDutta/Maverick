@@ -52,46 +52,48 @@ class _RegisterViewState extends State<RegisterView> {
         appBar: AppBar(title: const Text('Register')),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text('Please register to interact with and create notes!'),
-              TextField(
-                  controller: _email,
-                  autocorrect: false,
-                  autofocus: true,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration:
-                      const InputDecoration(hintText: ' Enter your email')),
-              TextField(
-                  controller: _password,
-                  obscureText: true,
-                  enableSuggestions: false,
-                  autocorrect: false,
-                  decoration: const InputDecoration(
-                      hintText: ' Enter your password 🤫')),
-              Center(
-                child: Column(
-                  children: [
-                    OutlinedButton(
-                        onPressed: () async {
-                          final email = _email.text;
-                          final password = _password.text;
-                          context.read<AuthBloc>().add(AuthEventRegister(
-                                email,
-                                password,
-                              ));
-                        },
-                        child: const Text('Sign up')),
-                    TextButton(
-                        onPressed: () {
-                          context.read<AuthBloc>().add(const AuthEventLogOut());
-                        },
-                        child: const Text('Already registered? Log in'))
-                  ],
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Please register to interact with and create notes!'),
+                TextField(
+                    controller: _email,
+                    autocorrect: false,
+                    autofocus: true,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration:
+                        const InputDecoration(hintText: ' Enter your email')),
+                TextField(
+                    controller: _password,
+                    obscureText: true,
+                    enableSuggestions: false,
+                    autocorrect: false,
+                    decoration: const InputDecoration(
+                        hintText: ' Enter your password 🤫')),
+                Center(
+                  child: Column(
+                    children: [
+                      OutlinedButton(
+                          onPressed: () async {
+                            final email = _email.text;
+                            final password = _password.text;
+                            context.read<AuthBloc>().add(AuthEventRegister(
+                                  email,
+                                  password,
+                                ));
+                          },
+                          child: const Text('Sign up')),
+                      TextButton(
+                          onPressed: () {
+                            context.read<AuthBloc>().add(const AuthEventLogOut());
+                          },
+                          child: const Text('Already registered? Log in'))
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

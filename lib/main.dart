@@ -18,6 +18,7 @@ void main() {
   runApp(
     MaterialApp(
       title: 'Maverick',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
