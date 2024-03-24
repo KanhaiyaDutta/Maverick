@@ -30,35 +30,72 @@ class _NotesViewState extends State<NotesView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Your Notes'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed(createOrUpdateNoteRoute);
-            },
-            icon: const Icon(Icons.add),
+      appBar: PreferredSize(
+        preferredSize:
+            Size.fromHeight(MediaQuery.of(context).size.height * 0.12),
+        child: Container(
+          color: const Color(0xFF0C1C2E),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(createOrUpdateNoteRoute);
+                    },
+                    icon: const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
+                  ),
+                  PopupMenuButton<MenuAction>(
+                    iconColor: Colors.white,
+                    onSelected: (value) async {
+                      switch (value) {
+                        case MenuAction.logout:
+                          final shouldLogOut = await showLogOutDialog(context);
+                          if (shouldLogOut) {
+                            context
+                                .read<AuthBloc>()
+                                .add(const AuthEventLogOut());
+                          }
+                      }
+                    },
+                    itemBuilder: (context) {
+                      return const [
+                        PopupMenuItem<MenuAction>(
+                          value: MenuAction.logout,
+                          child: Text('Log out'),
+                        )
+                      ];
+                    },
+                  )
+                ],
+              ),
+              const Row(
+                children: [
+                  SizedBox(
+                    width: 15,
+                  ),
+                  Text(
+                    'Your Notes',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.4),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+            ],
           ),
-          PopupMenuButton<MenuAction>(
-            onSelected: (value) async {
-              switch (value) {
-                case MenuAction.logout:
-                  final shouldLogOut = await showLogOutDialog(context);
-                  if (shouldLogOut) {
-                    context.read<AuthBloc>().add(const AuthEventLogOut());
-                  }
-              }
-            },
-            itemBuilder: (context) {
-              return const [
-                PopupMenuItem<MenuAction>(
-                  value: MenuAction.logout,
-                  child: Text('Log out'),
-                )
-              ];
-            },
-          )
-        ],
+        ),
       ),
       body: StreamBuilder(
         stream: _notesService.allNotes(ownerUserId: userId),

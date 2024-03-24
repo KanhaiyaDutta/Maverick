@@ -1,6 +1,6 @@
 import 'package:maverick/services/auth/auth_user.dart';
 
-abstract class AuthProvider {
+abstract class AuthProviders {
   Future<void> initialize();
   AuthUser? get currentUser;
   Future<AuthUser> logIn({

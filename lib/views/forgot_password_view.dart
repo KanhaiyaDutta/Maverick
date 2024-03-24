@@ -44,38 +44,120 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
         }
       },
       child: Scaffold(
-        appBar: AppBar(title: const Text('Forgot Password')),
+        appBar: PreferredSize(
+          preferredSize:
+              Size.fromHeight(MediaQuery.of(context).size.height * 0.18),
+          child: Container(
+            color: const Color(0xFF0C1C2E),
+            child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Text(
+                      'Forgot Password',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 2,
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Text(
+                      'Enter your email to receive password reset link',
+                      style: TextStyle(
+                        color: Colors.white38,
+                        fontSize: 12,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                )
+              ],
+            ),
+          ),
+        ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const Text('Enter your email to receive password link'),
+                const SizedBox(
+                  height: 10,
+                ),
                 TextField(
-                  keyboardType: TextInputType.emailAddress,
-                  autocorrect: false,
-                  autofocus: true,
                   controller: _controller,
-                  decoration:
-                      const InputDecoration(hintText: 'Your email address....'),
+                  autocorrect: false,
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.done,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    labelText: 'Email',
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                  ),
                 ),
-                OutlinedButton(
-                  onPressed: () {
+                const SizedBox(height: 16),
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () async {
                     final email = _controller.text;
-                    context.read<AuthBloc>().add(
-                          AuthEventForgotPassword(email: email),
-                        );
+                    context
+                        .read<AuthBloc>()
+                        .add(AuthEventForgotPassword(email: email));
                   },
-                  child: const Text('Send me password reset link'),
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Color(0xFFBAE162)),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15))),
+                  ),
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: double.infinity,
+                    height: 55,
+                    child: const Text(
+                      'Send',
+                      style: TextStyle(color: Colors.black, fontSize: 22),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    context.read<AuthBloc>().add(
-                          const AuthEventLogOut(),
-                        );
-                  },
-                  child: const Text('back to login page'),
-                )
+                const SizedBox(height: 35),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        context.read<AuthBloc>().add(const AuthEventLogOut());
+                      },
+                      child: const Text(
+                        'Go Back',
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 154, 209, 26),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),

@@ -12,6 +12,7 @@ import 'package:maverick/views/notes/notes_view.dart';
 import 'package:maverick/views/register_view.dart';
 import 'package:maverick/views/verify_email_view.dart';
 import 'package:maverick/constants/routes.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +20,8 @@ void main() {
     MaterialApp(
       title: 'Maverick',
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

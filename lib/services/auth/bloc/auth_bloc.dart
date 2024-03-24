@@ -4,7 +4,7 @@ import 'package:maverick/services/auth/bloc/auth_events.dart';
 import 'package:maverick/services/auth/bloc/auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc(AuthProvider provider)
+  AuthBloc(AuthProviders provider)
       : super(const AuthStateUninitialized(isLoading: true)) {
     // send email verification
     on<AuthEventSendEmailVerification>((event, emit) async {

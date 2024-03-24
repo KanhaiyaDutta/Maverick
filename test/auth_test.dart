@@ -69,7 +69,7 @@ void main() {
 
 class NotInitializedException implements Exception {}
 
-class MockAuthProvider implements AuthProvider {
+class MockAuthProvider implements AuthProviders {
   AuthUser? _user;
   var _isInitialized = false;
   bool get isInitialized => _isInitialized;
@@ -127,7 +127,7 @@ class MockAuthProvider implements AuthProvider {
         AuthUser(id: 'my_id', isEmailVerified: true, email: 'foo@bar.com');
     _user = newUser;
   }
-  
+
   @override
   Future<void> sendPasswordReset({required String toEmail}) {
     // TODO: implement sendPasswordReset

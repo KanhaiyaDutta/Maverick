@@ -2,8 +2,8 @@ import 'package:maverick/services/auth/auth_provider.dart';
 import 'package:maverick/services/auth/auth_user.dart';
 import 'package:maverick/services/auth/firebase_auth_provider.dart';
 
-class AuthService implements AuthProvider {
-  final AuthProvider provider;
+class AuthService implements AuthProviders {
+  final AuthProviders provider;
 
   AuthService(this.provider);
 
